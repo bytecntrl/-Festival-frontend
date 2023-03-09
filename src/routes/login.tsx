@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 export default function Login() {
     const [state, setState] = useState({"username": "", "password": ""});
+    const [message, setMessage] = useState("");
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const name = event.target.name;
@@ -12,11 +13,18 @@ export default function Login() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(state);
+        
+        if (!state.username || !state.password) {
+            setMessage("Password or username missing");
+            return;
+        }
+
+        console.log("Login!");
     }
 
     return (
         <div className="container mt-3">
+            {message ? <div className="alert alert-danger" role="alert">{message}</div> : null}
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="formInputUsername" className="form-label">Username:</label>
