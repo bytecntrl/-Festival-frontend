@@ -12,6 +12,15 @@ function NavBar() {
     
     const auth = new Auth(accessToken, refreshToken);
 
+    let links = [<Link key="0" to="/" className="nav-link active">Home</Link>];
+
+    if (!auth.isLoggedIn()) {
+        if (auth.isTokenExpired())
+            links.push(<Link key="1" to="/login" className="nav-link">Login</Link>);
+        else
+            links.push(<Link key="2" to="/token" className="nav-link">Token</Link>);
+    }
+
     return (
         <nav className="navbar navbar-expand-lg bg-light">
             <div className="container-fluid">
@@ -28,13 +37,9 @@ function NavBar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    {
-                        !auth.isLoggedIn() ?
-                        <div className="navbar-nav">
-                            <Link to="/" className="nav-link active">Home</Link>
-                            <Link to="/login" className="nav-link">Login</Link>
-                        </div> : null
-                    }
+                    <div className="navbar-nav">
+                        {links}
+                    </div>
                 </div>
             </div>
         </nav>
