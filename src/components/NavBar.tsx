@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 import { Auth } from "../utils/auth";
 import useAccessToken from "../stores/access-token";
@@ -7,18 +7,39 @@ import useRefreshToken from "../stores/refresh-token";
 
 
 function NavBar() {
-    const {accessToken} = useAccessToken();
-    const {refreshToken} = useRefreshToken();
+    const accessToken = useAccessToken();
+    const refreshToken = useRefreshToken();
     
-    const auth = new Auth(accessToken, refreshToken);
+    const auth = new Auth(accessToken.accessToken, refreshToken.refreshToken);
 
-    let links = [<Link key="0" to="/" className="nav-link active">Home</Link>];
+    const logout = function () {
+        accessToken.reset();
+        refreshToken.reset();
+    }
+
+    let links = [<NavLink key="0" to="/" className="nav-link">Home</NavLink>];
 
     if (!auth.isLoggedIn()) {
         if (auth.isTokenExpired())
-            links.push(<Link key="1" to="/login" className="nav-link">Login</Link>);
+            links.push(<NavLink key="1" to="/login" className="nav-link">Login</NavLink>);
         else
-            links.push(<Link key="2" to="/token" className="nav-link">Token</Link>);
+            links.push(<NavLink key="2" to="/token" className="nav-link">Token</NavLink>);
+    }
+
+    if (auth.hasRoles()) {
+        links.push(<NavLink key="3" to="/order" className="nav-link">Order</NavLink>);
+    }
+
+    if (auth.isAdmin()) {
+        links.push(<NavLink key="4" to="/users" className="nav-link">Users</NavLink>);
+        links.push(<NavLink key="5" to="/subcategories" className="nav-link">Subcategories</NavLink>);
+        links.push(<NavLink key="6" to="/products" className="nav-link">Products</NavLink>);
+        links.push(<NavLink key="7" to="/menu" className="nav-link">Menu</NavLink>);
+    }
+
+    if (auth.isLoggedIn()) {
+        links.push(<NavLink key="8" to="/profile" className="nav-link">Profile</NavLink>);
+        links.push(<Link key="9" to="/" className="nav-link" onClick={logout}>Logout</Link>);
     }
 
     return (
