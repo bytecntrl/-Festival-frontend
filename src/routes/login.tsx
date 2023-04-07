@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { MyFetch } from '../utils/my-fetch';
-import useAccessToken from '../stores/access-token';
-import useRefreshToken from '../stores/refresh-token';
+import useTokenJwt from '../stores/token-jwt';
 
 
 export default function Login() {
     const [state, setState] = useState({"username": "", "password": ""});
     const [message, setMessage] = useState("");
 
-    const {setAccessToken} = useAccessToken();
-    const {setRefreshToken} = useRefreshToken();
+    const {setTokenJwt} = useTokenJwt();
 
     const navigate = useNavigate();
 
@@ -39,8 +37,7 @@ export default function Login() {
             return;
         }
 
-        setAccessToken(resp.token);
-        setRefreshToken(resp.refresh_token);
+        setTokenJwt(resp.token);
 
         return navigate("/");
     }

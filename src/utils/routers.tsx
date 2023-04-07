@@ -3,17 +3,22 @@ import { createBrowserRouter } from "react-router-dom";
 
 import Root from "../routes/root";
 import Login from "../routes/login";
+import Users from "../routes/users";
 
 
 const routers = createBrowserRouter(
     [
         {
-            "path": "/",
-            "element": <Root />,
+            path: "/",
+            element: <Root />,
             children: [
                 {
-                    "path": "/login",
+                    path: "/login",
                     element: <Login />
+                },
+                {
+                    path: "/users",
+                    element: <Users />
                 }
             ]
         }

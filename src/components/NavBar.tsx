@@ -2,19 +2,16 @@ import React from "react";
 import { NavLink, Link } from "react-router-dom";
 
 import { Auth } from "../utils/auth";
-import useAccessToken from "../stores/access-token";
-import useRefreshToken from "../stores/refresh-token";
+import useTokenJwt from "../stores/token-jwt";
 
 
 function NavBar() {
-    const accessToken = useAccessToken();
-    const refreshToken = useRefreshToken();
+    const token = useTokenJwt();
     
-    const auth = new Auth(accessToken.accessToken, refreshToken.refreshToken);
+    const auth = new Auth(token.tokenJwt);
 
     const logout = function () {
-        accessToken.reset();
-        refreshToken.reset();
+        token.reset();
     }
 
     let links = [<NavLink key="0" to="/" className="nav-link">Home</NavLink>];
