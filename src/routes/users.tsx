@@ -53,6 +53,8 @@ function Users() {
     }
 
     const handleClick = async () => {
+        setMessage("");
+
         let b = { username: form.username, password: form.password, role: ROLES[form.role] };
 
         const option = {
@@ -74,6 +76,29 @@ function Users() {
 
         setForm({username: "", password: "", role: 0});
         getData();
+    }
+
+    const delUser = async (id: number) => {
+        setMessage("");
+
+        const option = {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${tokenJwt}`,
+				'Content-Type': 'application/json'
+			}
+		};
+
+        const response = await MyFetch(`users/${id}`, option);
+
+        if (response.error) {
+            setMessage(response.message);
+            
+            return;
+        }
+
+        getData();
+        setPage(1);
     }
 
     let users: JSX.Element[] = [];
@@ -107,7 +132,11 @@ function Users() {
                 <td>{k.username}</td>
                 <td>{k.role}</td>
                 <td>
-                    <button type="button" className="btn btn-danger">
+                    <button 
+                        type="button" 
+                        className="btn btn-danger"
+                        onClick={() => delUser(k.id)}
+                    >
                         <i className="bi bi-trash" />
                     </button>
                 </td>
