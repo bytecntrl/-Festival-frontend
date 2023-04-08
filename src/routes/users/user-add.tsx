@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { MyFetch } from "../../utils/my-fetch";
 import { ROLES } from "../../utils/constants";
+import { MyFetch } from "../../utils/my-fetch";
 
 
 interface UserAddProps {

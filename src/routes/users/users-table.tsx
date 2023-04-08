@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { User } from '../../models/users';
 import { MyFetch } from "../../utils/my-fetch";
@@ -15,10 +15,6 @@ interface UserTableProps {
 
 function UsersTable(props: UserTableProps) {
     let users: JSX.Element[] = [];
-
-    useEffect(() => {
-        props.getData();
-    }, []);
 
     const delUser = async (id: number) => {
         props.setMessage("");

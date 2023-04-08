@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { User, UserResponse } from "../../models/users";
 import useTokenJwt from "../../stores/token-jwt";
@@ -29,11 +29,15 @@ function Users() {
                     return;
                 }
 
-                setState(r.users)
+                setState(r.users);
                 setPageNum(r.page);
             }
         );
     }
+
+    useEffect(() => {
+        getData();
+    }, [page]);
 
     let pages: JSX.Element[] = [];
 
@@ -43,10 +47,7 @@ function Users() {
                 key={x.toString()}
                 type="button"
                 className={"btn btn-primary" + (x+1==page ? " active" : "")}
-                onClick={() => {
-                    setPage(x+1);
-                    getData();
-                }}>{x+1}
+                onClick={() => setPage(x+1)}>{x+1}
             </button>
         );
     }
