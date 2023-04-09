@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { User, UserResponse } from "../../models/users";
 import useTokenJwt from "../../stores/token-jwt";
 import { MyFetch } from "../../utils/my-fetch";
-import UsersTable from "./users-table";
 import UserAdd from "./user-add";
+import UsersTable from "./users-table";
 
 
 function Users() {
