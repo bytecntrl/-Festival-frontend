@@ -1,10 +1,12 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 
-import Root from "../routes/root";
 import Login from "../routes/login";
-import Users from "../routes/users/users";
+import ProductsAdd from "../routes/products/add/products-add";
+import Products from "../routes/products/products";
+import Root from "../routes/root";
 import Subcategories from "../routes/subcategories/subcategories";
+import Users from "../routes/users/users";
 
 
 const routers = createBrowserRouter(
@@ -24,6 +26,14 @@ const routers = createBrowserRouter(
                 {
                     path: "/subcategories",
                     element: <Subcategories />
+                },
+                {
+                    path: "/products",
+                    element: <Products />
+                },
+                {
+                    path: "/products/add",
+                    element: <ProductsAdd />
                 },
             ]
         }
