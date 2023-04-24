@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import { ProductsAddForm } from "../../../models/products";
 import { SubcategoriesResponse, Subcategory } from "../../../models/subcategories";
 import useTokenJwt from "../../../stores/token-jwt";
 import { ROLES } from "../../../utils/constants";
 import { MyFetch } from "../../../utils/my-fetch";
+import ProductsAddIngredients from "./products-add-ingredients";
 import ProductsAddVariant from "./products-add-variant";
 
 
@@ -15,13 +17,16 @@ function ProductsAdd() {
         {
             "name": "", 
             "price": "", 
-            "category": "foods",
-            "subcategory": "-1",
+            "category": "",
+            "subcategory": "",
             "roles": [],
-            "variants": []
+            "variants": [],
+            "ingredients": []
         }
     );
     const { tokenJwt } = useTokenJwt();
+
+    const navigate = useNavigate();
 
     const getData = () => {
         const option = {
@@ -46,6 +51,51 @@ function ProductsAdd() {
     useEffect(() => {
         getData();
     }, []);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        setMessage("");
+
+        const option = {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${tokenJwt}`,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+                name: form.name,
+                price: +form.price,
+                category: form.category,
+                subcategory: +form.subcategory,
+                roles: form.roles,
+                variant: form.variants,
+                ingredients: form.ingredients
+            })
+		};
+
+        const response = await MyFetch("products/", option);
+
+        if (response.error) {
+            setMessage(response.message);
+
+            setForm(
+                {
+                    "name": "", 
+                    "price": "", 
+                    "category": "",
+                    "subcategory": "",
+                    "roles": [],
+                    "variants": [],
+                    "ingredients": []
+                }
+            )
+
+            return;
+        }
+
+        return navigate("/products");
+    }
 
     let rolesSelect: JSX.Element[] = [];
     let subcategoriesList: JSX.Element[] = [];
@@ -73,7 +123,7 @@ function ProductsAdd() {
     return (
         <div className="container mt-4">
             {message ? <div className="alert alert-danger" role="alert">{message}</div> : null}
-            <form>
+            <form onSubmit={handleSubmit} method="POST">
                 <div className="mb-3">
                     <label htmlFor="NameField" className="form-label"><strong>Name:</strong></label>
                     <input
@@ -84,8 +134,10 @@ function ProductsAdd() {
                         value={form.name}
                         placeholder="Name of new Product"
                         onChange={handleChange}
+                        required
                     />
                 </div>
+                
                 <div className="mb-3">
                     <label htmlFor="PriceField" className="form-label"><strong>Price:</strong></label>
                     <input
@@ -98,8 +150,10 @@ function ProductsAdd() {
                         value={form.price}
                         placeholder="Price of new Product"
                         onChange={handleChange}
+                        required
                     />
                 </div>
+                
                 <div className="mb-3">
                     <label htmlFor="CategoryField" className="form-label"><strong>Category:</strong></label>
                     <select 
@@ -108,11 +162,14 @@ function ProductsAdd() {
                         name="category" 
                         value={form.category} 
                         onChange={handleChange}
+                        required
                     >
+                        <option disabled value="">Select a Category</option>
                         <option value="foods">foods</option>
                         <option value="drinks">drinks</option>
                     </select>
                 </div>
+                
                 <div className="mb-3">
                     <label htmlFor="SubcategoryField" className="form-label"><strong>Subcategory:</strong></label>
                     <select 
@@ -121,11 +178,13 @@ function ProductsAdd() {
                         name="subcategory"
                         value={form.subcategory}
                         onChange={handleChange}
+                        required
                     >
-                        <option value="-1">Select a Subcategory</option>
+                        <option disabled value="">Select a Subcategory</option>
                         {subcategoriesList}
                     </select>
                 </div>
+                
                 <div className="mb-3">
                     <label htmlFor="RolesField" className="form-label"><strong>Roles:</strong></label>
                     <select 
@@ -135,11 +194,18 @@ function ProductsAdd() {
                         name="roles"
                         value={form.roles}
                         onChange={handleChangeRoles}
+                        required
                     >
                         {rolesSelect}
                     </select>
                 </div>
+
                 <ProductsAddVariant form={form} setForm={setForm} />
+                <ProductsAddIngredients form={form} setForm={setForm} />
+
+                <div className="mb-3">
+			        <button className="btn btn-primary" type="submit">Save</button>
+		        </div>
             </form>
         </div>
     );

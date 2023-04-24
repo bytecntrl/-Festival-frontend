@@ -7,4 +7,5 @@ export interface ProductsAddForm {
     subcategory: string
     roles: string[]
     variants: { name: string, price: number }[]
+    ingredients: { name: string, price: number }[]
 }

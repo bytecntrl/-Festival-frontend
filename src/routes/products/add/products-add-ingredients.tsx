@@ -3,17 +3,17 @@ import React from "react";
 import { ProductsAddForm } from "../../../models/products";
 
 
-interface ProductsAddVariantProps {
+interface ProductsAddIngredientsProps {
     form: ProductsAddForm
     setForm: React.Dispatch<React.SetStateAction<ProductsAddForm>>
 }
 
 
-function ProductsAddVariant(props: ProductsAddVariantProps) {
-    const addVariant = () => {
+function ProductsAddIngredients(props: ProductsAddIngredientsProps) {
+    const addIngredient = () => {
         props.setForm((value) => ({
             ...value, 
-            variants: [...props.form.variants, {"name": "", "price": 0}]
+            ingredients: [...props.form.ingredients, {"name": "", "price": 0}]
         }))
     }
 
@@ -21,7 +21,7 @@ function ProductsAddVariant(props: ProductsAddVariantProps) {
         const name = event.target.name;
         const value = event.target.value;
 
-        let tmp = props.form.variants;
+        let tmp = props.form.ingredients;
 
         switch (name) {
             case "name":
@@ -33,29 +33,29 @@ function ProductsAddVariant(props: ProductsAddVariantProps) {
                 break;
         }
 
-        props.setForm(values => ({...values, variants: tmp}));
+        props.setForm(values => ({...values, ingredients: tmp}));
     }
 
-    const deleteVariant = (i: number) => {
-        let tmp = props.form.variants;
+    const deleteIngredients = (i: number) => {
+        let tmp = props.form.ingredients;
 
         tmp.splice(i, 1);
 
-        props.setForm(values => ({...values, variants: tmp}));
+        props.setForm(values => ({...values, ingredients: tmp}));
     }
 
-    let variants: JSX.Element[] = [];
+    let ingredients: JSX.Element[] = [];
 
-    props.form.variants.forEach((v, i) => {
-        variants.push(
+    props.form.ingredients.forEach((v, i) => {
+        ingredients.push(
             <div className="row mb-2" key={i}>
 					<div className="col-auto">
-						<label htmlFor="NameVariantField" className="visually-hidden">Name</label>
+						<label htmlFor="NameIngredientsField" className="visually-hidden">Name</label>
 						<input
 							type="text"
 							className="form-control"
-							id="NameVariantField"
-							placeholder="Enter name of variant"
+							id="NameIngredientsField"
+							placeholder="Enter name of ingredient"
                             name="name"
                             value={v.name}
                             onChange={(e) => handleChange(e, i)}
@@ -63,14 +63,14 @@ function ProductsAddVariant(props: ProductsAddVariantProps) {
 						/>
 					</div>
 					<div className="col-auto">
-						<label htmlFor="PriceVariantField" className="visually-hidden">Price</label>
+						<label htmlFor="PriceIngredientsField" className="visually-hidden">Price</label>
 						<input
 							type="number"
 							min="0.00"
 							step="0.05"
 							className="form-control"
-							id="PriceVariantField"
-							placeholder="Enter price of variant"
+							id="PriceIngredientsField"
+							placeholder="Enter price of ingredient"
                             name="price"
                             value={v.price}
                             onChange={(e) => handleChange(e, i)}
@@ -81,7 +81,7 @@ function ProductsAddVariant(props: ProductsAddVariantProps) {
 						<button 
                             type="button" 
                             className="btn btn-danger"
-                            onClick={() => deleteVariant(i)}
+                            onClick={() => deleteIngredients(i)}
                         >
                             <i className="bi bi-trash" />
                         </button>
@@ -92,18 +92,18 @@ function ProductsAddVariant(props: ProductsAddVariantProps) {
 
     return (
         <div className="mb-3">
-			<p className="form-label"><strong>Variants:</strong></p>
-            {variants}
+			<p className="form-label"><strong>Ingredients:</strong></p>
+            {ingredients}
             <button 
                 type="button" 
                 className="btn btn-primary btn-sm"
-                onClick={addVariant}
+                onClick={addIngredient}
             >
-                Add variant
+                Add ingredient
             </button>
         </div>
     );
 }
 
 
-export default ProductsAddVariant;
+export default ProductsAddIngredients;
