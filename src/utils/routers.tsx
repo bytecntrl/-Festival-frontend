@@ -7,6 +7,7 @@ import Products from "../routes/products/products";
 import Root from "../routes/root";
 import Subcategories from "../routes/subcategories/subcategories";
 import Users from "../routes/users/users";
+import ProductsEdit from "../routes/products/edit/products-edit";
 
 
 const routers = createBrowserRouter(
@@ -30,6 +31,10 @@ const routers = createBrowserRouter(
                 {
                     path: "/products",
                     element: <Products />
+                },
+                {
+                    path: "/products/:productId",
+                    element: <ProductsEdit />
                 },
                 {
                     path: "/products/add",

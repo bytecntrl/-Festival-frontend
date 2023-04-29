@@ -29,7 +29,7 @@ function ProductsList(props: ProductsListProps) {
 					<td>
 						<a 
                             className="btn btn-primary" 
-                            href="/products/{product.id}" 
+                            href={"/products/" + product.id}
                             role="button"
                         >
                             <i className="bi bi-pen" />
